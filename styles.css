@@ -1,9 +1,8 @@
-/* General Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -13,185 +12,130 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    color: white;
 }
 
-/* Auth Container Styles */
-#auth-container {
+.container {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.login-container, .todo-container {
+    display: none;
+}
+
+.login-container.active, .todo-container.active {
+    display: block;
+}
+
+.login-card {
     perspective: 1000px;
 }
 
-.card {
-    width: 300px;
-    height: 400px;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.8s;
-}
-
 .card-inner {
+    position: relative;
     width: 100%;
-    height: 100%;
-    position: absolute;
+    transition: transform 0.6s;
     transform-style: preserve-3d;
 }
 
 .card-front, .card-back {
-    width: 100%;
-    height: 100%;
     position: absolute;
+    width: 100%;
     backface-visibility: hidden;
-    background: rgba(0, 0, 0, 0.5); /* Transparent background */
     padding: 20px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle box shadow */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
+}
+
+.card-front {
+    background: #fff;
 }
 
 .card-back {
+    background: #f0f0f0;
     transform: rotateY(180deg);
 }
 
-.card.flipped .card-inner {
+.card-inner.flipped {
     transform: rotateY(180deg);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
 }
 
 input {
     margin-bottom: 10px;
     padding: 10px;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-}
-
-input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 1.2rem;
+    padding: 10px;
     border: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
+    border-radius: 5px;
+    background: #007bff;
+    color: #fff;
     cursor: pointer;
 }
 
 button:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-#show-register, #show-login {
-    color: aqua;
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-/* Todo Container Styles */
-#todo-container {
-    text-align: center;
-    background: rgba(0, 0, 0, 0.5); /* Transparent background */
-    padding: 20px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle box shadow */
-    width: 500px;
-    max-height: 600px;
-    overflow-y: auto;
-}
-
-.hidden {
-    display: none;
-}
-
-#logout-btn {
-    margin-bottom: 20px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    cursor: pointer;
-}
-
-#logout-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-#todo-form {
-    display: flex;
-    margin-bottom: 20px;
-}
-
-#todo-input {
-    flex: 1;
-    padding: 10px;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    margin-right: 10px;
-}
-
-#todo-input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-#todo-form button {
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    cursor: pointer;
-}
-
-#todo-form button:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: #0056b3;
 }
 
 #todo-list {
     list-style-type: none;
     padding: 0;
-    margin: 0;
-    padding-bottom: 50px; /* Ensure some empty space at the bottom */
 }
 
 .todo-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(233, 30, 99, 0.8); /* Pink semi-transparent background */
-    margin-bottom: 10px;
+    background: rgba(0, 0, 0, 0.1);
     padding: 10px;
-    border-radius: 10px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    margin: 5px 0;
+    border-radius: 5px;
 }
 
-.todo-item.deleting {
-    transform: translateX(-100%);
-    opacity: 0;
+.todo-item p {
+    margin: 0;
 }
 
-.delete-btn {
-    background: rgba(255, 87, 34, 0.8); /* Deep Orange background */
-    border: none;
-    border-radius: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
+.todo-item time {
+    font-size: 0.8em;
+    color: #555;
+}
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+/* Styles for the logout button */
+#logout-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: red;
     color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.delete-btn:hover {
-    background: rgba(255, 87, 34, 1); /* Solid Deep Orange */
+#logout-btn:hover {
+    background-color: darkred;
 }
+
+/* Existing styles for other elements remain unchanged */
