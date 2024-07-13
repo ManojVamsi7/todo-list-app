@@ -121,7 +121,6 @@ button:hover {
         opacity: 0;
     }
 }
-/* Styles for the logout button */
 #logout-btn {
     position: absolute;
     top: 1rem;
@@ -137,5 +136,8 @@ button:hover {
 #logout-btn:hover {
     background-color: darkred;
 }
-
-/* Existing styles for other elements remain unchanged */
+.card-front button,
+.card-back button {
+    margin-top: 10px;
+    width: 100%; 
+}
