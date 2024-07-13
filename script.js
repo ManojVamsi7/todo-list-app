@@ -1,113 +1,113 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const loginContainer = document.getElementById("auth-container");
-    const loginForm = document.getElementById("login-form");
-    const registerForm = document.getElementById("register-form");
-    const showRegister = document.getElementById("show-register");
-    const showLogin = document.getElementById("show-login");
-    const card = document.querySelector(".card");
-    const todoContainer = document.getElementById("todo-container");
-    const logoutBtn = document.getElementById("logout-btn");
-    const todoForm = document.getElementById("todo-form");
-    const todoInput = document.getElementById("todo-input");
-    const todoList = document.getElementById("todo-list");
+document.addEventListener('DOMContentLoaded', () => {
+    const loginContainer = document.querySelector('.login-container');
+    const todoContainer = document.querySelector('.todo-container');
+    const cardInner = document.querySelector('.card-inner');
+    const registerBtn = document.getElementById('register-btn');
+    const loginBackBtn = document.getElementById('login-back-btn');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const todoForm = document.getElementById('todo-form');
+    const todoInput = document.getElementById('todo-input');
+    const todoList = document.getElementById('todo-list');
 
-    const saveUsers = (users) => {
-        localStorage.setItem("users", JSON.stringify(users));
-    };
+    const users = JSON.parse(localStorage.getItem('users')) || {};
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
 
-    const loadUsers = () => {
-        const savedUsers = localStorage.getItem("users");
-        return savedUsers ? JSON.parse(savedUsers) : [];
-    };
+    let currentUser = localStorage.getItem('currentUser');
 
-    const saveTodos = (username, todos) => {
-        localStorage.setItem(`todos-${username}`, JSON.stringify(todos));
-    };
+    if (currentUser) {
+        loginContainer.classList.remove('active');
+        todoContainer.classList.add('active');
+        loadTasks();
+    } else {
+        loginContainer.classList.add('active');
+    }
 
-    const loadTodos = (username) => {
-        const savedTodos = localStorage.getItem(`todos-${username}`);
-        return savedTodos ? JSON.parse(savedTodos) : [];
-    };
+    registerBtn.addEventListener('click', () => {
+        cardInner.classList.add('flipped');
+    });
 
-    let currentUser = null;
-    let users = loadUsers();
-    let todos = [];
+    loginBackBtn.addEventListener('click', () => {
+        cardInner.classList.remove('flipped');
+    });
 
-    const displayTodos = () => {
-        todoList.innerHTML = "";
-        todos.forEach((todo, index) => {
-            const li = document.createElement("li");
-            li.className = "todo-item";
-            li.textContent = todo;
-            const deleteBtn = document.createElement("button");
-            deleteBtn.className = "delete-btn";
-            deleteBtn.textContent = "Delete";
-            deleteBtn.addEventListener("click", () => {
-                li.classList.add("deleting");
-                setTimeout(() => {
-                    todos.splice(index, 1);
-                    saveTodos(currentUser, todos);
-                    displayTodos();
-                }, 300);
-            });
-            li.appendChild(deleteBtn);
-            todoList.insertBefore(li, todoList.firstChild); // Add newest to the top
-        });
-    };
-
-    const switchToRegister = () => {
-        card.classList.add("flipped");
-    };
-
-    const switchToLogin = () => {
-        card.classList.remove("flipped");
-    };
-
-    showRegister.addEventListener("click", switchToRegister);
-    showLogin.addEventListener("click", switchToLogin);
-
-    loginForm.addEventListener("submit", (e) => {
+    loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const username = loginForm.querySelector("#login-username").value;
-        const password = loginForm.querySelector("#login-password").value;
-        const user = users.find(user => user.username === username && user.password === password);
-        if (user) {
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+
+        if (users[username] && users[username] === password) {
             currentUser = username;
-            loginContainer.classList.add("hidden");
-            todoContainer.classList.remove("hidden");
-            todos = loadTodos(currentUser);
-            displayTodos();
+            localStorage.setItem('currentUser', currentUser);
+            loginContainer.classList.remove('active');
+            todoContainer.classList.add('active');
+            loadTasks();
         } else {
-            alert("Invalid username or password");
+            alert('Invalid username or password');
         }
     });
 
-    registerForm.addEventListener("submit", (e) => {
+    registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const username = registerForm.querySelector("#register-username").value;
-        const password = registerForm.querySelector("#register-password").value;
-        if (users.some(user => user.username === username)) {
-            alert("Username already exists");
+        const username = document.getElementById('register-username').value;
+        const password = document.getElementById('register-password').value;
+
+        if (users[username]) {
+            alert('Username already exists');
         } else {
-            users.push({ username, password });
-            saveUsers(users);
-            alert("Registration successful");
-            switchToLogin();
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Registration successful');
+            cardInner.classList.remove('flipped');
         }
     });
 
-    logoutBtn.addEventListener("click", () => {
-        loginContainer.classList.remove("hidden");
-        todoContainer.classList.add("hidden");
-    });
-
-    todoForm.addEventListener("submit", (e) => {
+    todoForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        todos.unshift(todoInput.value); // Add newest to the beginning
-        saveTodos(currentUser, todos);
-        displayTodos();
-        todoInput.value = "";
+        const taskText = todoInput.value;
+        const taskTime = new Date().toLocaleString();
+
+        if (!tasks[currentUser]) {
+            tasks[currentUser] = [];
+        }
+
+        tasks[currentUser].unshift({ text: taskText, time: taskTime });
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        todoInput.value = '';
+        loadTasks();
     });
 
-    displayTodos();
+    function loadTasks() {
+        todoList.innerHTML = '';
+        if (tasks[currentUser]) {
+            tasks[currentUser].forEach(task => {
+                const li = document.createElement('li');
+                li.classList.add('todo-item');
+                li.innerHTML = `
+                    <div>
+                        <p>${task.text}</p>
+                        <time>${task.time}</time>
+                    </div>
+                    <button class="delete-btn">Delete</button>
+                `;
+                todoList.appendChild(li);
+
+                li.querySelector('.delete-btn').addEventListener('click', () => {
+                    li.style.animation = 'slideOut 0.5s forwards';
+                    li.addEventListener('animationend', () => {
+                        tasks[currentUser] = tasks[currentUser].filter(t => t !== task);
+                        localStorage.setItem('tasks', JSON.stringify(tasks));
+                        loadTasks();
+                    });
+                });
+            });
+        }
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        localStorage.removeItem('currentUser');
+        currentUser = null;
+        loginContainer.classList.add('active');
+        todoContainer.classList.remove('active');
+    });
 });
