@@ -38,7 +38,7 @@ Go to the repository on GitHub.
 Click on "Settings".
 Scroll down to the "Pages" section.
 Under "Source", select the branch you want to use (e.g., main) and click "Save".
-Your website will be published at https://your-username.github.io/todo-list-app.
+Your website will be published at https://manojvamsi7.github.io/todo-list-app/.
 
 Usage
 Register: Click on "Register" and enter a new username and password.
