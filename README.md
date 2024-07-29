@@ -47,6 +47,7 @@ Add To-Do Item: Enter a task in the input field and click "Add" to add it to the
 Delete To-Do Item: Click on the delete button next to a task to remove it from the list.
 Project Structure
 Copy code
+```bash
 todo-list-app/
 ├── index.html
 ├── styles.css
@@ -54,6 +55,7 @@ todo-list-app/
 ├── images/
 │   └── bg.jpg
 └── README.md
+```
 index.html: The main HTML file for the application.
 styles.css: The CSS file containing styles for the application.
 script.js: The JavaScript file containing the logic for the application.
