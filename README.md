@@ -57,11 +57,17 @@ todo-list-app/
 └── README.md
 ```
 index.html: The main HTML file for the application.
+
 styles.css: The CSS file containing styles for the application.
+
 script.js: The JavaScript file containing the logic for the application.
+
 images/bg.jpg: The background image for the application.
+
 README.md: This file.
+
 Contributing
+
 If you want to contribute to this project, please fork the repository and submit a pull request. Feel free to report issues or suggest new features by creating a new issue.
 
 License
